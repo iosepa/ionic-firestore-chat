@@ -19,6 +19,22 @@
 
 <ion-content padding>
 
+<ion-list>
+  <ion-item button *ngFor="let group of groups | async" text-wrap 
+  [routerLink]="['/', 'chat', (group | async)?.id || 0]">
+    <ion-label text-wrap>
+      <ion-text color="primary">
+        <h3>{{ (group | async)?.title}}</h3>
+      </ion-text>
+      <p>
+        {{(group | async)?.users.length}} Users
+      </p>
+    </ion-label>
+     
+  </ion-item>
+</ion-list>
+
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button routerLink="/chats/start">
       <ion-icon name="add"></ion-icon>

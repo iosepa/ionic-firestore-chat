@@ -19,24 +19,6 @@ export class AuthService {
   user: User = null;
   displayName = '';
 
-
-  /*
-  constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
-    this.afAuth.authState.subscribe(res => {
-      this.user = res;
-      console.log(res['displayName'], "constructor")
-      if (this.user) {
-        this.db.doc(`users/${this.currentUserId}`).valueChanges().pipe(
-          tap(() => {
-            console.log("tap", res)
-            this.displayName = res['displayName'];
-          })
-        ).subscribe();
-      }
-    })
-  } //displayName was always returned as null from the database ?? 
-*/
-
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
     this.afAuth.authState.subscribe(res => {
       this.user = res;
@@ -100,6 +82,7 @@ export class AuthService {
   }
 
   get currentUserId(): string {
+    console.log("checking id" + this.user)
     return this.authenticated ? this.user.uid : '';
   }
 }

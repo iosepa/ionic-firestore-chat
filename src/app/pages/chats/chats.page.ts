@@ -2,7 +2,8 @@ import { ChatService } from './../../services/chat.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
+import {map, take} from 'rxjs/operators'
 
 @Component({
   selector: 'app-chats',
@@ -17,6 +18,7 @@ export class ChatsPage implements OnInit {
 
   ngOnInit() {
     this.groups = this.chatService.getGroups();
+    
   }
 
 
