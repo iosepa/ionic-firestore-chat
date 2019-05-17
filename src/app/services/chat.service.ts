@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { take, map, switchMap } from 'rxjs/operators';
+import { take, map, switchMap, tap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
 import { forkJoin, from } from 'rxjs';
 import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/storage';
@@ -10,6 +10,8 @@ import { AngularFireStorage, AngularFireStorageReference } from '@angular/fire/s
   providedIn: 'root'
 })
 export class ChatService {
+
+  tempGroup: Array<Object> = [];
 
   constructor(private db: AngularFirestore, private auth: AuthService, private storage: AngularFireStorage) { }
 
@@ -30,25 +32,22 @@ export class ChatService {
         return { id, ...data };
       }))
     );
-    //console.log(email, displayName)
     return [email, displayName];
   }
 
   createGroup(title, users) {
-    //console.log("createGroup", this.auth.displayName, this.auth.authenticated)
-
     let current = {
       email: this.auth.currentUser.email,
       id: this.auth.currentUserId,
-      displayName: this.auth.displayName
+      displayName: this.auth.displayName,
+      seenLatest: true,
     };
-
     let allUsers = [current, ...users];
-
 
     return this.db.collection('groups').add({
       title: title,
-      users: allUsers
+      users: allUsers,
+      
     }).then(res => {
       let promises = [];
 
@@ -94,12 +93,33 @@ export class ChatService {
   }
 
   addChatMessage(msg, chatId) {
+    this.db.doc('groups/'+chatId).get().subscribe((documentSnapshot: firebase.firestore.DocumentSnapshot) => {
+      documentSnapshot.data()['users'].forEach((user: Object) => {
+        this.tempGroup.push(user);  
+      });
+      this.tempGroup.forEach(user => {
+        if (user['id'] == this.auth.currentUserId)
+          user['seenLatest'] = true;
+        else
+          user['seenLatest'] = false;
+      })
+      console.table(this.tempGroup)
+
+      this.db.doc('groups/'+chatId).set({
+        title: 'wg',
+        users: this.tempGroup
+      })
+      this.tempGroup = [];
+    });
+
+
     return this.db.collection('groups/' + chatId + '/messages').add({
       msg: msg,
       from: this.auth.currentUserId,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
   }
+
 
   addFileMessage(file, chatId) {
     let newName = `${new Date().getTime()}-${this.auth.currentUserId}.png`;
@@ -108,6 +128,7 @@ export class ChatService {
   }
 
   saveFileMessage(filepath, chatId) {
+
     return this.db.collection('groups/' + chatId + '/messages').add({
       file: filepath,
       from: this.auth.currentUserId,

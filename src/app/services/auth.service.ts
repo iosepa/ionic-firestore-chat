@@ -19,6 +19,9 @@ export class AuthService {
   user: User = null;
   displayName = '';
 
+
+
+
   constructor(private afAuth: AngularFireAuth, private db: AngularFirestore) {
     this.afAuth.authState.subscribe(res => {
       this.user = res;
@@ -35,7 +38,6 @@ export class AuthService {
   }
 
   signUp(credentials: UserCredentials) {
-    //console.log(credentials.displayName)
     return this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
       .then((data) => {
         return this.db.doc(`users/${data.user.uid}`).set({
@@ -82,7 +84,6 @@ export class AuthService {
   }
 
   get currentUserId(): string {
-    console.log("checking id" + this.user)
     return this.authenticated ? this.user.uid : '';
   }
 }

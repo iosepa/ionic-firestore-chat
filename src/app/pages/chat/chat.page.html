@@ -16,7 +16,7 @@
    
     <ion-grid>
       <ion-row *ngFor="let message of messages | async">
-        <ion-col size="9" size-md="6" *ngIf="message.from !== currentUserId" class="message other-message">
+        <ion-col size="9" size-md="8" *ngIf="message.from !== currentUserId" class="message other-message">
           <b>{{ message.user }}</b><br>
           <span>{{ message.msg }}
             <img [src]="message.file" *ngIf="message.file">
@@ -25,7 +25,7 @@
           <div class="time" text-right><br>{{ message.createdAt.toMillis() | date:'short' }}</div>
         </ion-col>
    
-        <ion-col offset="3" offset-md="6" size="9" size-md="6" *ngIf="message.from === currentUserId" class="message my-message">
+        <ion-col offset="3" offset-md="4" size="9" size-md="8" *ngIf="message.from === currentUserId" class="message my-message">
           <b>{{ message.user }}</b><br>
           <span>{{ message.msg }}
             <img [src]="message.file" *ngIf="message.file">

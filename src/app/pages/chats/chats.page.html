@@ -30,7 +30,7 @@
         {{(group | async)?.users.length}} Users
       </p>
     </ion-label>
-     
+     <p *ngIf="newMessageGroups.includes((group | async)?.id)">New!</p>
   </ion-item>
 </ion-list>
 

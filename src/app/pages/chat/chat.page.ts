@@ -15,7 +15,7 @@ export class ChatPage implements OnInit {
   messages: Observable<any[]>;
   newMsg = '';
   chatTitle = '';
-  currentUserId = this.auth.currentUserId;
+  currentUserId = '';
   chat = null;
 
   @ViewChild(IonContent) content: IonContent;
@@ -32,6 +32,7 @@ export class ChatPage implements OnInit {
           map(messages => {
             for (let msg of messages) {
               msg['user'] = this.getMsgFromName(msg['from']);
+              // console.log(msg)
             }
             return messages;
           }),
@@ -43,8 +44,7 @@ export class ChatPage implements OnInit {
         )
       })
     })
-    console.log("userid: " +this.currentUserId)
-
+    this.currentUserId = this.auth.currentUserId;
   }
 
   getMsgFromName(userId){
