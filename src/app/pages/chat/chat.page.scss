@@ -1,40 +1,65 @@
 .message {
-    padding: 10px !important;
-    border-radius: 10px !important;
-    margin-bottom: 4px !important;
- 
-    img {
-      width: 100%;
-    }
+  padding: 10px !important;
+  border-radius: 15px !important;
+  margin-bottom: 4px !important;
+
+  img {
+    width: 100%;
   }
-  .my-message {
-    background: var(--ion-color-tertiary);
-    color: #fff;
-  }
-  .other-message {
-    background: var(--ion-color-secondary);
-    color: #fff;
-  }
- 
+}
+.my-message {
+  background: var(--ion-color-tertiary);
+  color: #fff;
+}
+.other-message {
+  background: var(--ion-color-secondary);
+  color: #fff;
+}
+
 .time {
   color: #dfdfdf;
   float: right;
   font-size: small;
 }
- 
-.message-input {
-    width: 100%;
-    border: 1px solid var(--ion-color-medium);
-    border-radius: 10px;
-    background: #fff;
-    padding: 10px;
-    resize: none;
-    outline: 0;
 
-    &::-webkit-scrollbar {
-        display: none;
-      }
-      &:focus {
-        box-shadow: 0 0 3pt 2pt var(--ion-color-primary);
-      }
+.message-input {
+  width: 100%;
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px;
+  resize: none;
+  outline: 0;
+  color: var(--ion-color-primary);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &:focus {
+    box-shadow: 0 0 3pt 2pt var(--ion-color-tertiary);
+  }
+}
+
+.my-message:after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  right: -15px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 0px solid transparent;
+  border-left: 20px solid var(--ion-color-tertiary);
+}
+
+.other-message:after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: -15px;
+  width: 0;
+  height: 0;
+  border-top: 0px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 20px solid var(--ion-color-secondary);
 }
